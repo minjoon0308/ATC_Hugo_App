@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Load exercises from a CSV file'
 
     def handle(self, *args, **kwargs):
-        with open('table_processed.csv', newline='', encoding='utf-8') as csvfile:
+        with open('data2_processed.csv', newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 Exercise.objects.create(
