@@ -7,7 +7,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class WorkoutSerializer(serializers.ModelSerializer):
-    exercises = ExerciseSerializer(many=True, read_only=True)
+    exercises = ExerciseSerializer(many=True)
 
     class Meta:
         model = Workout

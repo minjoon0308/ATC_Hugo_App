@@ -21,10 +21,8 @@ export default function Nav(props: BoxProps){
         // const jwtToken = page()
         async function fetchData(){
             try {
-                const response = await axios.post('/api/access', {token: 'token'})
-                console.log(response)
-                const data = response.data
-                if(!Object.keys(data).length) setLoggedIn(false)
+                const authToken = localStorage.getItem('authToken')
+                if(!authToken) setLoggedIn(false)
                 else setLoggedIn(true)
                 
             } catch (error:any) {
@@ -64,12 +62,11 @@ export default function Nav(props: BoxProps){
                 <a href="/at_connect" style={props.place===5 ? { borderBottom: "5px solid #453F78"} : {}}>AT Connect</a>  */}
             </div>
 
-            {/* <div className={['Navlinks', LinksClass].join(' ')}>
-                 <Link href="/at_connect" style={props.place===5 ? { borderBottom: "5px solid #453F78"} : {}}>AT Connect</Link> 
-                {!LoggedIn ? <Link href="/user/signup" style={props.place===3 ? { borderBottom: "5px solid #453F78"} : {}}>Sign Up</Link> : <></>}
-                {!LoggedIn ? <Link href="/user/login" style={props.place===4 ? {borderBottom: "5px solid #453F78"} : {}}>Login</Link>: <></>}
-                {LoggedIn ? <Link href="/user/profile" style={props.place===5 ? { borderBottom: "5px solid #453F78"} : {}}>Profile</Link> : <></>}
-            </div> */}
+            <div className={['Navlinks', LinksClass].join(' ')}>
+                {!LoggedIn ? <a href="/auth/signup" style={props.place===3 ? { borderBottom: "5px solid #453F78"} : {}}>Sign Up</a> : <></>}
+                {!LoggedIn ? <a href="/auth/login" style={props.place===4 ? {borderBottom: "5px solid #453F78"} : {}}>Login</a>: <></>}
+                {LoggedIn ? <a href="/auth/logout" style={props.place===5 ? { borderBottom: "5px solid #453F78"} : {}}>Logout</a> : <></>}
+            </div>
         </div>
     )
     

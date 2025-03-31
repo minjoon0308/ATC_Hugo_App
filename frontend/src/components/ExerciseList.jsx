@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getExercises } from "../api.jsx";
+import { getExercises } from "../api/api.jsx";
 
 const ExerciseList = () => {
   const [exercises, setExercises] = useState([]);
