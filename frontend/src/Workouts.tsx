@@ -13,10 +13,11 @@ export default function Workouts(){
                 console.log(response.data.length);
                 if (!response.data.length){
                     console.log("GOT HERE")
-                    setWorkouts([{id:"1", name: "Add Exercise!", desc: "Add an exercise using the button on the bottom right"}, {id:"2", name: "Add Exercise!", desc: "Add an exercise using the button on the bottom right"}]); 
+                    setWorkouts([{id:"1", name: "Add an Exercise!", desc: "Add an exercise using the button on the bottom right"},]); 
                 }
                 else setWorkouts(response.data); 
             } catch (error) {
+                setWorkouts([ {id:"2", name: "Error Fetching Workouts", desc: "Please logout and login again."}])
                 console.error('Error fetching workouts:', error);
             }
         }; 

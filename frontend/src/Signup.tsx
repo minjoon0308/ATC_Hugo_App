@@ -74,7 +74,7 @@ const Signup = () => {
 
                 </div>
                 <div>
-                    <p className="mt-5">Already have an account? <a href="/auth/signup">Login</a></p>
+                    <p className="mt-5">Already have an account? <a href="/auth/login">Login</a></p>
                 </div>
 
             </form>

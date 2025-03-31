@@ -1,7 +1,7 @@
 //import logo from "./logo.svg";
 // import ExerciseList from "./components/ExerciseList.jsx";
 import Nav from "./components/Nav.js";
-import AddExercise from "./components/AddExercise"
+
 import PrivateRoute from "./components/PrivateRoutes";
 
 //AUTH COMPS
@@ -11,6 +11,7 @@ import Logout from "./Logout.js"
 
 //WORKOUTS
 import Workouts from "./Workouts.js"
+import CreateWO from "./CreateWO.js";
 
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -37,8 +38,7 @@ function App() {
         <div className="create">
           <Nav/>
           <div className="Content">      
-            <h1>Name of Your Workout</h1>
-            <AddExercise/>
+            <CreateWO/>
           </div>
         </div>
         }/>
