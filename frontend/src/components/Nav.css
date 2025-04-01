@@ -16,6 +16,7 @@
 
 .Nav .Logo a{
     color: var(--dark);
+    padding-right: 1em;
 }
 .Nav .Navlinks{
     display: flex;

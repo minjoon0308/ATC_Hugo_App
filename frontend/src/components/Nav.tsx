@@ -50,6 +50,7 @@ export default function Nav(props: BoxProps){
         <div className={['Nav',ItemsClass,  props.color].join(' ')}>
             <div className={['Logo'].join(' ')}>
                 <a href="/app" id='LogoRI'>Huge-o Workout</a>
+                <a href="/about_us" style={props.place===0 ? { borderBottom: "5px solid #453F78"} : {}}>Create an Exercise</a>
                 <div id="LogoMID"></div>
                 <span onClick={toggleit} className="navbar-toggle" id="js-navbar-toggle">
                    <Hamburger /> 

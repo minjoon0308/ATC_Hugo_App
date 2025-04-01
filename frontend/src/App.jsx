@@ -12,6 +12,7 @@ import Logout from "./Logout.js"
 //WORKOUTS
 import Workouts from "./Workouts.js"
 import CreateWO from "./CreateWO.js";
+import RunWorkout from "./RunWorkout.js";
 
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -33,16 +34,28 @@ function App() {
           </div>
         }/>
         <Route
-        path="/create"
-        element={
-        <div className="create">
-          <Nav/>
-          <div className="Content">      
-            <CreateWO/>
+          path="/create"
+          element={
+          <div className="create">
+            <Nav/>
+            <div className="Content">      
+              <CreateWO/>
+            </div>
           </div>
-        </div>
-        }/>
-      </Route>
+          }/>
+
+
+        <Route
+          path="/workout"
+          element={
+          <div className="create">
+            <Nav/>
+            <div className="Content">      
+              <RunWorkout/>
+            </div>
+          </div>
+          }/>
+        </Route>
       
       
 

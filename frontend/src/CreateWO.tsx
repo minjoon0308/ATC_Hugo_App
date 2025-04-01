@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {  createWorkout } from "./api/api";
 import AddExercise from "./components/AddExercise"
 import ExerciseBox from "./components/ExerciseBox"
+import StartWO from "./components/StartWO";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateWO(){
@@ -117,7 +118,7 @@ export default function CreateWO(){
     return(
         <div className="">
             <div className="w-[70vw] flex flex-col justify-center mb-4">
-                <div className="text-5xl flex font-semibold items-center mb-5 focus:outline-hidden focus:outline-none">
+                <div className="text-5xl flex font-semibold items-center mb-10 focus:outline-hidden focus:outline-none">
                     <p className="">Create Your Workout - </p>
                     <input type="text"
                     placeholder="Workout Name"
@@ -126,7 +127,7 @@ export default function CreateWO(){
                     className="border-transparent focus:border-transparent focus:ring-0 "/>
                     <p className=" text-lg font-normal lg:text-xl text-gray-700">est: {totalTime}</p> 
                 </div>
-                <div className="mb-4 ">
+                <div className="mb-4 bg">
                     <button onClick={(resetAll)} className="bg-red-300">reset all</button>
                 </div>
                 
@@ -138,12 +139,12 @@ export default function CreateWO(){
                 </div>
                 <div className="flex flex-col gap-4 justify-center items-center">
                     <AddExercise updateExercises={updateExercises} existingExercises={selectedExercises}/>
-                    <button className="w-full mt-10 text-xl outline-none focus:outline-hidden focus:outline-none bg-blue-100"
+                    <button className="w-full mt-10 text-xl outline-none focus:outline-hidden focus:outline-none bg-blue-200"
                     onClick={handleCreateWorkout}>Finalize Workout
                     </button>
                 </div>
             </div>
-            
+            <StartWO/>
         </div>
     )
 }
