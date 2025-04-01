@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 export default function Nav(){    
     const navigate = useNavigate();
     const create = () => {
-        localStorage.setItem("workoutName", "");
-        localStorage.setItem("selectedExercises", JSON.stringify([]))
+        localStorage.removeItem("workoutId");
+        localStorage.removeItem("workoutName");
+        localStorage.removeItem("selectedExercises");
         navigate("/create");
     }
     return(

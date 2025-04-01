@@ -22,7 +22,8 @@ interface BoxProps{
     id: number;
     index: number;
     name: string;
-    numReps: 1;
+    numReps: number;
+    rest: number;
     handleDelete: (arg0: number) => void;
     updateExercise: (arg0: any, arg1: number) => void;
 
@@ -33,9 +34,9 @@ export default function ExerciseBox(props: BoxProps){
     const [open, setOpen] = useState(false); //MODAL
 
     // Things you can edit
-    const [numReps, setNumReps] = useState(1)
-    const [duration, setDuration] = useState(5)
-    const [rest, setRest] = useState(30)
+    const [numReps, setNumReps] = useState(props.numReps)
+    const [duration, setDuration] = useState(props.duration)
+    const [rest, setRest] = useState(props.rest)
     const handleOpen = () => setOpen(!open); // Generally how you deal with states
     const handleConfirm = () => {
             let newExercise = {numReps: numReps, rest: rest, duration:duration}
@@ -44,10 +45,10 @@ export default function ExerciseBox(props: BoxProps){
             setOpen(false);
     };
 
-    console.log(props.description)
+    console.log(props.duration)
     return(
         <>
-        <div onClick={handleOpen} className={`relative w-full flex flex-col rounded-xl bg-slate-200 content-center  place-content-center justify-center items-center m-5 pt-10 shadow-lg outline outline-black/5 
+        <div onClick={handleOpen} className={`relative w-full flex flex-col rounded-xl bg-slate-200 content-center hover:cursor-pointer place-content-center justify-center items-center m-5 pt-10 shadow-lg outline outline-black/5 
             ${
                 props.difficulty === "Beginner"
                 ? "bg-green-200"
@@ -64,7 +65,7 @@ export default function ExerciseBox(props: BoxProps){
                     An exercise primary focused on the {props.body_region} region</p>
 
                     <p className="py-1 px-3 mb-4 text-lg font-normal text-gray-500 lg:text-xl  dark:text-gray-200">
-                <span className="bold">Duration: </span>{props.duration*props.numReps} minutes 
+                    <span className="bold">Duration: </span>{props.duration*props.numReps} minutes 
                     <span className="bold"> Sets: </span>{props.numReps} 
                     
                 </p>

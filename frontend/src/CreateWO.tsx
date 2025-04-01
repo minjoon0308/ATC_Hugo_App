@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { getExercises, createWorkout } from "./api/api";
+import {  createWorkout } from "./api/api";
 import AddExercise from "./components/AddExercise"
 import ExerciseBox from "./components/ExerciseBox"
+import { useNavigate } from "react-router-dom";
 
 export default function CreateWO(){
+    const [workoutId, setWorkoutId] = useState(() => localStorage.getItem("workoutId") || null);
     const [workoutName, setWorkoutName] = useState(() => localStorage.getItem("workoutName") || "");
     const [selectedExercises, setSelectedExercises] = useState(() => {
         const savedExercises = localStorage.getItem("selectedExercises");
         return savedExercises ? JSON.parse(savedExercises) : [];
     });
 
+    const navigate = useNavigate();
     const [totalTime, setTotalTime] = useState(0)
     // const [selectedExercises, setSelectedExercises] = useState<number[]>([]);
 
@@ -48,6 +51,43 @@ export default function CreateWO(){
     const resetAll = () => {
         setWorkoutName("");
         setSelectedExercises([])
+        localStorage.removeItem("workoutId");
+        localStorage.removeItem("workoutName");
+        localStorage.removeItem("selectedExercises");
+    }
+
+    // Create Workout
+    const handleCreateWorkout = async() =>{
+        const token = localStorage.getItem("authToken");
+        const workoutData = {
+            name: workoutName, 
+            exercises: selectedExercises,
+            duration: totalTime
+        }
+        try {
+            if (workoutId) {
+                console.log(workoutId)
+                // Update existing workout
+                const res = await createWorkout( workoutData, token, workoutId);
+                console.log("Workout updated", res.data);
+                navigate('/app')
+            }
+
+            else {
+                console.log(token)
+                const res = await createWorkout(workoutData, token)
+                console.log("Workout created", res.data)
+                navigate('/app')
+            }
+            // Cleanup local storage
+            localStorage.removeItem("workoutId");
+            localStorage.removeItem("workoutName");
+            localStorage.removeItem("selectedExercises");
+
+        } catch (error) {
+            console.error("Error creating workout:", error.response ? error.response.data : error);
+        }
+        
     }
 
     //STORAGEEEE
@@ -66,6 +106,7 @@ export default function CreateWO(){
         if (savedWorkoutName) setWorkoutName(savedWorkoutName);
     
         const savedExercises = localStorage.getItem("selectedExercises");
+        console.log(savedExercises)
         if (savedExercises){
             let se = JSON.parse(savedExercises)
             setSelectedExercises(se);
@@ -98,7 +139,7 @@ export default function CreateWO(){
                 <div className="flex flex-col gap-4 justify-center items-center">
                     <AddExercise updateExercises={updateExercises} existingExercises={selectedExercises}/>
                     <button className="w-full mt-10 text-xl outline-none focus:outline-hidden focus:outline-none bg-blue-100"
-                    >Make Workout
+                    onClick={handleCreateWorkout}>Finalize Workout
                     </button>
                 </div>
             </div>

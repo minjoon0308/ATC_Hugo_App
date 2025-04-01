@@ -5,14 +5,13 @@ import Box from "./components/Box"
 
 export default function Workouts(){
     const [workouts, setWorkouts] = useState<any>([])
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         const fetchWorkouts = async () => {
             try {
                 const response = await getUserWorkouts(); 
-                console.log(response.data.length);
                 if (!response.data.length){
-                    console.log("GOT HERE")
                     setWorkouts([{id:"1", name: "Add an Exercise!", desc: "Add an exercise using the button on the bottom right"},]); 
                 }
                 else setWorkouts(response.data); 
@@ -22,13 +21,13 @@ export default function Workouts(){
             }
         }; 
         fetchWorkouts();
-    }, [])
+    }, [refresh])
     return(
         <div>
             <h1>Workouts</h1>
             <div className="flex flex-col justify-center items-center h-full k">
                 {workouts.map((workout) => (
-                    <Box name={workout.name} desc={workout.desc} />
+                    <Box {...workout} setRefresh={setRefresh} />
                 ))}
             </div>
             <Add/>

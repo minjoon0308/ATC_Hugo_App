@@ -6,7 +6,15 @@ const API = axios.create({
 
 export const getExercises = () => API.get('exercises/');
 export const getWorkouts = () => API.get('workouts/');
-export const createWorkout = (workout) => API.post('workouts/', workout);
+    export const createWorkout = (workout,token, id=null) => 
+        {
+            if (id) {
+                workout.id = id;
+            }        
+            return API.post('workouts/', workout, {
+                headers: {Authorization: `Bearer ${token}`}
+            });
+        }
 
 export const getUserWorkouts = async () => {
     const token = localStorage.getItem('authToken');
@@ -15,6 +23,20 @@ export const getUserWorkouts = async () => {
         throw new Error('No token found. Please log in again.');
     }
     return API.get('workouts/', {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+};
+
+export const getWorkoutById = async (workoutId) => {
+    const token = localStorage.getItem('authToken');
+    return API.get(`workouts/${workoutId}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+};
+
+export const deleteWorkout = async (workoutId) => {
+    const token = localStorage.getItem('authToken');
+    return API.delete(`workouts/${workoutId}/`, {
         headers: { Authorization: `Bearer ${token}` }
     });
 };
