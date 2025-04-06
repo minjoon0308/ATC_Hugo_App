@@ -34,7 +34,7 @@ function App() {
           </div>
         }/>
         <Route
-          path="/create"
+          path="/create/:workoutId?"
           element={
           <div className="create">
             <Nav/>
@@ -46,7 +46,7 @@ function App() {
 
 
         <Route
-          path="/workout"
+          path="/workout/:workoutId/step/:stepIndex"
           element={
           <div className="create">
             <Nav/>

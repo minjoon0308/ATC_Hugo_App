@@ -3,16 +3,38 @@ import {  createWorkout } from "./api/api";
 import AddExercise from "./components/AddExercise"
 import ExerciseBox from "./components/ExerciseBox"
 import StartWO from "./components/StartWO";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function CreateWO(){
-    const [workoutId, setWorkoutId] = useState(() => localStorage.getItem("workoutId") || null);
+    const { workoutId } = useParams();
     const [workoutName, setWorkoutName] = useState(() => localStorage.getItem("workoutName") || "");
     const [selectedExercises, setSelectedExercises] = useState(() => {
         const savedExercises = localStorage.getItem("selectedExercises");
         return savedExercises ? JSON.parse(savedExercises) : [];
     });
-
+    
+    useEffect(() => {
+        if (workoutId && !localStorage.getItem("workoutName")) {
+          // fetch from backend to prefill form if localStorage is empty
+          const fetchWorkout = async () => {
+            const token = localStorage.getItem("authToken");
+            try {
+              const res = await fetch(`/api/workouts/${workoutId}/`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              const data = await res.json();
+              setWorkoutName(data.name);
+              setSelectedExercises(data.exercises);
+            } catch (error) {
+              console.error("Failed to load workout", error);
+            }
+          };
+          fetchWorkout();
+        }
+      }, [workoutId]);
+    
     const navigate = useNavigate();
     const [totalTime, setTotalTime] = useState(0)
     // const [selectedExercises, setSelectedExercises] = useState<number[]>([]);
@@ -144,7 +166,7 @@ export default function CreateWO(){
                     </button>
                 </div>
             </div>
-            <StartWO/>
+            <StartWO id={workoutId} step={0} name={workoutName} exercises={selectedExercises} duration = {totalTime}/>
         </div>
     )
 }

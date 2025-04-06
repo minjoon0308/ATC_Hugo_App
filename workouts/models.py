@@ -35,3 +35,14 @@ class WorkoutExercise(models.Model):
 
     def __str__(self):
         return f"{self.exercise.name} in {self.workout.name}"
+    
+class WorkoutLogs(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    duration = models.IntegerField()
+    exercises_done = models.JSONField(default=list)  # NEW!
+
+    def __str__(self):
+        return f"Log: {self.user.username} - {self.workout.name}"
+

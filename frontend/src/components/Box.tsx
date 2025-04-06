@@ -27,7 +27,7 @@ export default function Box(props: BoxProps){
             rest: e.rest_time
         }));
         localStorage.setItem("selectedExercises", JSON.stringify(transformedExercises || []));
-        navigate("/create"); // Navigate to CreateWO
+        navigate(`/create/${id}`); // Navigate to CreateWO
     }
 
     const deleteWO = async() =>{

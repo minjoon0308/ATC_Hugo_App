@@ -1,10 +1,10 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import Exercise, Workout, WorkoutExercise
-from .serializers import ExerciseSerializer, WorkoutSerializer
+from .models import Exercise, Workout, WorkoutExercise, WorkoutLogs
+from .serializers import ExerciseSerializer, WorkoutSerializer, WorkoutLogSerializer
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework import status, permissions
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -133,3 +133,11 @@ class LogoutView(APIView):
             return Response({"message": "Logged out successfully!"}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+class WorkoutLogsViewSet(ModelViewSet):
+    serializer_class = WorkoutLogSerializer 
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        return WorkoutLogs.objects.filter(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
