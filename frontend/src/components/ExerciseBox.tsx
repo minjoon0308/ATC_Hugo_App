@@ -22,8 +22,8 @@ interface BoxProps{
     id: number;
     index: number;
     name: string;
-    numReps: number;
-    rest: number;
+    num_reps: number;
+    rest_time: number;
     handleDelete: (arg0: number) => void;
     updateExercise: (arg0: any, arg1: number) => void;
 
@@ -34,18 +34,24 @@ export default function ExerciseBox(props: BoxProps){
     const [open, setOpen] = useState(false); //MODAL
 
     // Things you can edit
-    const [numReps, setNumReps] = useState(props.numReps)
+    const [numReps, setNumReps] = useState(props.num_reps)
     const [duration, setDuration] = useState(props.duration)
-    const [rest, setRest] = useState(props.rest)
+    const [rest, setRest] = useState(props.rest_time)
     const handleOpen = () => setOpen(!open); // Generally how you deal with states
     const handleConfirm = () => {
-            let newExercise = {numReps: numReps, rest: rest, duration:duration}
+            let newExercise = {num_reps: numReps, rest_time: rest, duration:duration}
             console.log(newExercise)
             props.updateExercise(newExercise, props.index);
             setOpen(false);
     };
+    useEffect(() => {
+        setNumReps(props.num_reps);
+        setDuration(props.duration);
+        setRest(props.rest_time);
+    }, [props.num_reps, props.duration, props.rest_time]);
 
-    console.log(props.duration)
+    console.log(props.rest_time,props.num_reps)
+    console.log(numReps, rest)
     return(
         <>
         <div onClick={handleOpen} className={`relative w-full flex flex-col rounded-xl bg-slate-200 content-center hover:cursor-pointer place-content-center justify-center items-center m-5 pt-10 shadow-lg outline outline-black/5 
@@ -65,8 +71,8 @@ export default function ExerciseBox(props: BoxProps){
                     An exercise primary focused on the {props.body_region} region</p>
 
                     <p className="py-1 px-3 mb-4 text-lg font-normal text-gray-500 lg:text-xl  dark:text-gray-200">
-                    <span className="bold">Duration: </span>{props.duration*props.numReps} minutes 
-                    <span className="bold"> Sets: </span>{props.numReps} 
+                    <span className="bold">Duration: </span>{props.duration*props.num_reps} minutes 
+                    <span className="bold"> Sets: </span>{props.num_reps} 
                     
                 </p>
                 <button className=" absolute top-1 right-1  focus:outline-hidden mb-8 outline-none px-3 py-1 opacity-90"
@@ -87,8 +93,7 @@ export default function ExerciseBox(props: BoxProps){
                                 className="rounded-lg"
                                 width="100%"
                                 height="315"
-                                src={`https://www.youtube.com/embed/${props.short_demo.split("shorts/")[1]?.split("?")[0]}?autoplay=1&controls=1`}
-                                title="YouTube video player"
+                                src={`https://www.youtube.com/embed/${props.short_demo.split("shorts/")[1]?.split("?")[0]}?autoplay=0&rel=0&controls=1`}                                title="YouTube video player"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                             ></iframe>

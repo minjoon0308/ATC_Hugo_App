@@ -14,6 +14,9 @@ import Workouts from "./Workouts.js"
 import CreateWO from "./CreateWO.js";
 import RunWorkout from "./RunWorkout.js";
 
+//EXERCISES 
+import Exercise from "./Exercise.js";
+
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -55,9 +58,32 @@ function App() {
             </div>
           </div>
           }/>
+
+        <Route
+          path="/exercise"
+          element={
+          <div className="App">
+            <Nav/>
+            <div className="Content">          
+              <Exercise/>
+            </div>
+          </div>
+        }/>
+
+        <Route
+          path="/createExercise"
+          element={
+          <div className="App">
+            <Nav/>
+            <div className="Content">          
+            </div>
+          </div>
+        }/>
         </Route>
+
+        
       
-      
+        
 
 
       

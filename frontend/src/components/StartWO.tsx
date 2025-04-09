@@ -5,38 +5,42 @@ import { useNavigate } from "react-router-dom";
 import { createWorkout } from "../api/api";
 
 interface StartProps{
-    id: number;
+    id: any;
     step: number;
     name: string; 
     exercises: [];
     duration: number;
+    changed: boolean;
 }
 export default function StartWO(props:StartProps){    
     const navigate = useNavigate();
     const handleStart = async () => {
         try {
-          if (props.id) {
+          const token = localStorage.getItem("authToken");
+          if (!props.changed) {
             // Already have a workout ID
             navigate(`/workout/${props.id}/step/${props.step}`);
           } else {
-            // Create new workout before starting
-            const token = localStorage.getItem("authToken");
-    
             const workoutData = {
               name: props.name || "",
               exercises: props.exercises || [],
               duration: props.duration || 0,
             };
-    
-            const res = await createWorkout(workoutData, token);
-            const newWorkoutId = res.data.id;
-            
-
+      
+            let workoutId = props.id;
+      
+            if (props.id) {
+              await createWorkout(workoutData, token, props.id);
+            } else {
+              const res = await createWorkout(workoutData, token);
+              workoutId = res.data.id;
+            }
+      
             localStorage.removeItem("workoutId");
             localStorage.removeItem("workoutName");
             localStorage.removeItem("selectedExercises");
-
-            navigate(`/workout/${newWorkoutId}/step/${props.step}`);
+      
+            navigate(`/workout/${workoutId}/step/${props.step}`);
           }
         } catch (error) {
           console.error("Error starting workout:", error);

@@ -3,14 +3,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+interface AddProps{
+    link: string
+}
 
-export default function Nav(){    
+export default function Nav(props:AddProps){    
     const navigate = useNavigate();
     const create = () => {
         localStorage.removeItem("workoutId");
         localStorage.removeItem("workoutName");
         localStorage.removeItem("selectedExercises");
-        navigate("/create");
+        navigate(`/${props.link}`);
     }
     return(
         <div className="fixed bottom-5 right-5 text-4xl ">

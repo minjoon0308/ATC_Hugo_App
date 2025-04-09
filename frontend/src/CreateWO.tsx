@@ -4,6 +4,7 @@ import AddExercise from "./components/AddExercise"
 import ExerciseBox from "./components/ExerciseBox"
 import StartWO from "./components/StartWO";
 import { useParams, useNavigate } from "react-router-dom";
+import { getWorkoutById } from "./api/api.jsx";
 
 export default function CreateWO(){
     const { workoutId } = useParams();
@@ -12,27 +13,24 @@ export default function CreateWO(){
         const savedExercises = localStorage.getItem("selectedExercises");
         return savedExercises ? JSON.parse(savedExercises) : [];
     });
-    
+    const [changed, setChanged] = useState(false)     
     useEffect(() => {
-        if (workoutId && !localStorage.getItem("workoutName")) {
+        if (workoutId ) {
+            console.log(workoutId)
           // fetch from backend to prefill form if localStorage is empty
-          const fetchWorkout = async () => {
-            const token = localStorage.getItem("authToken");
-            try {
-              const res = await fetch(`/api/workouts/${workoutId}/`, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              });
-              const data = await res.json();
-              setWorkoutName(data.name);
-              setSelectedExercises(data.exercises);
-            } catch (error) {
-              console.error("Failed to load workout", error);
-            }
-          };
+            const fetchWorkout = async () => {
+                    const response = await getWorkoutById(workoutId);
+                    const data = response.data
+                    console.log(data)
+                    setWorkoutName(data.name);
+                    console.log("OLDDDD", data.workout_exercises)
+                    setSelectedExercises(data.workout_exercises);
+                };
+          
           fetchWorkout();
-        }
+          console.log("HIII", selectedExercises)
+          
+        };
       }, [workoutId]);
     
     const navigate = useNavigate();
@@ -63,8 +61,13 @@ export default function CreateWO(){
 
     // Update Time when the exercise list changes 
     useEffect(() => {
+        console.log(
+            "changed: ",
+            selectedExercises
+        )
+        setChanged(true) 
         const sum = selectedExercises.reduce(
-            (accumulator, current) => accumulator + current.duration * current.numReps+ current.rest/60,
+            (accumulator, current) => accumulator + current.duration * current.num_reps+ current.rest_time/60,
             0
         );
         setTotalTime(sum);
@@ -82,24 +85,23 @@ export default function CreateWO(){
     // Create Workout
     const handleCreateWorkout = async() =>{
         const token = localStorage.getItem("authToken");
+
+    
         const workoutData = {
-            name: workoutName, 
+            name: workoutName,
             exercises: selectedExercises,
-            duration: totalTime
-        }
+            duration: totalTime,
+        };
+
         try {
             if (workoutId) {
-                console.log(workoutId)
                 // Update existing workout
                 const res = await createWorkout( workoutData, token, workoutId);
-                console.log("Workout updated", res.data);
                 navigate('/app')
             }
 
             else {
-                console.log(token)
                 const res = await createWorkout(workoutData, token)
-                console.log("Workout created", res.data)
                 navigate('/app')
             }
             // Cleanup local storage
@@ -115,12 +117,10 @@ export default function CreateWO(){
 
     //STORAGEEEE
     useEffect(() => {
-        console.log(workoutName)
         localStorage.setItem("workoutName", workoutName);
     }, [workoutName]);
 
     useEffect(() => {
-        console.log(JSON.stringify(selectedExercises))
         localStorage.setItem("selectedExercises", JSON.stringify(selectedExercises));
     }, [selectedExercises]);
     
@@ -129,7 +129,6 @@ export default function CreateWO(){
         if (savedWorkoutName) setWorkoutName(savedWorkoutName);
     
         const savedExercises = localStorage.getItem("selectedExercises");
-        console.log(savedExercises)
         if (savedExercises){
             let se = JSON.parse(savedExercises)
             setSelectedExercises(se);
@@ -154,19 +153,19 @@ export default function CreateWO(){
                 </div>
                 
                 <div className="flex flex-col justify-center items-center">
-                    {selectedExercises.map((exercise:object, index) => (
-                        <ExerciseBox index={index} description={exercise} {...exercise} handleDelete={handleDelete} updateExercise={updateExercise} />
+                    {selectedExercises.map((elem:object, index) => (
+                        <ExerciseBox index={index} description={elem} {...elem} {...elem.exercise} handleDelete={handleDelete} updateExercise={updateExercise} />
                         )
                     )}
                 </div>
-                <div className="flex flex-col gap-4 justify-center items-center">
+                <div className="flex flex-col gap-4 justify-center items-center mb-5">
                     <AddExercise updateExercises={updateExercises} existingExercises={selectedExercises}/>
-                    <button className="w-full mt-10 text-xl outline-none focus:outline-hidden focus:outline-none bg-blue-200"
+                    <button className="w-full my-10 text-xl outline-none focus:outline-hidden focus:outline-none bg-blue-200"
                     onClick={handleCreateWorkout}>Finalize Workout
                     </button>
                 </div>
             </div>
-            <StartWO id={workoutId} step={0} name={workoutName} exercises={selectedExercises} duration = {totalTime}/>
+            <StartWO changed={changed} id={workoutId} step={0} name={workoutName} exercises={selectedExercises} duration = {totalTime}/>
         </div>
     )
 }

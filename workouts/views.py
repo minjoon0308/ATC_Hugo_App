@@ -52,39 +52,39 @@ class WorkoutViewSet(ModelViewSet):
                 workout.duration = total_duration
                 workout.date = timezone.now()
                 workout.save()
+                print(exercises)
                 for ex in exercises:
                     try:
-                        exercise = Exercise.objects.get(id=ex["id"])
+                        exercise = Exercise.objects.get(id=ex["exercise"]["id"])
                         WorkoutExercise.objects.create(
                             workout=workout,
                             exercise=exercise,
-                            num_reps=ex.get("numReps    ", 1),
+                            num_reps=ex.get("num_reps", 1),
                             duration=ex.get("duration", 0),
-                            rest_time=ex.get("rest", 30),
+                            rest_time=ex.get("rest_time", 30),
                         )
                     except Exercise.DoesNotExist:
-                        return Response({"error": f"Exercise with ID {ex["id"]} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-                return Response({"message": "Workout updated successfully", "workout_id": workout.id}, status=status.HTTP_200_OK)
-            
+                        return Response({"error": f"Exercise with ID {ex['exercise']['id']} not found"}, status=status.HTTP_404_NOT_FOUND)
+                            
             except Workout.DoesNotExist:
                 return Response({"error": "Workout not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Workout updated successfully", "workout_id": workout.id}, status=status.HTTP_200_OK)
 
         else:
             workout = Workout.objects.create(user=user, name=name, duration=total_duration, date=timezone.now())
 
             for ex in exercises:
                 try:
-                    exercise = Exercise.objects.get(id=ex["id"])
+                    exercise = Exercise.objects.get(id=ex["exercise"]["id"])
                     WorkoutExercise.objects.create(
                         workout=workout,
                         exercise=exercise,
-                        num_reps=ex.get("numReps", 1),
+                        num_reps=ex.get("num_reps", 1),
                         duration=ex.get("duration", 0),
-                        rest_time=ex.get("rest", 30),
+                        rest_time=ex.get("rest_time", 30),
                     )
                 except Exercise.DoesNotExist:
-                    return Response({"error": f"Exercise with ID {ex['id']} not found"}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({"error": f"Exercise with ID {ex['exercise']['id']} not found"}, status=status.HTTP_404_NOT_FOUND)
 
             return Response({"message": "Workout created successfully", "workout_id": workout.id}, status=status.HTTP_201_CREATED)
         

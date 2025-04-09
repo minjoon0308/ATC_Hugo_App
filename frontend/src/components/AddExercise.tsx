@@ -31,7 +31,7 @@ export default function AddExercise(props: AddExerciseProps){
 
     const handleConfirm = () => {
         if (selectedExercise) {
-            let newExercise = { ...selectedExercise, numReps, duration, rest }
+            let newExercise = { exercise:selectedExercise, num_reps: numReps, duration, rest_time: rest }
             console.log(newExercise)
             props.updateExercises([...props.existingExercises, newExercise]);
             setOpen(false);

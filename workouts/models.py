@@ -46,3 +46,17 @@ class WorkoutLogs(models.Model):
     def __str__(self):
         return f"Log: {self.user.username} - {self.workout.name}"
 
+class WorkoutSession(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.SET_NULL, null=True)
+    started_at = models.DateTimeField(auto_now_add=True)
+    ended_at = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def end_session(self):
+        self.ended_at = timezone.now()
+        self.is_active = False
+        self.save()
+
+    def __str__(self):
+        return f"Session for {self.user.username} - {self.workout.name}"

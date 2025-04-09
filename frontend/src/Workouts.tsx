@@ -30,7 +30,7 @@ export default function Workouts(){
                     <Box {...workout} setRefresh={setRefresh} />
                 ))}
             </div>
-            <Add/>
+            <Add link="create"/>
         </div>
     )
 }

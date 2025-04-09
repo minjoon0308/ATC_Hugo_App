@@ -5,16 +5,17 @@ const API = axios.create({
 });
 
 export const getExercises = () => API.get('exercises/');
+
 export const getWorkouts = () => API.get('workouts/');
-    export const createWorkout = (workout,token, id=null) => 
-        {
-            if (id) {
-                workout.id = id;
-            }        
-            return API.post('workouts/', workout, {
-                headers: {Authorization: `Bearer ${token}`}
-            });
-        }
+export const createWorkout = (workout,token, id=null) => 
+    {
+        if (id) {
+            workout.id = id;
+        }        
+        return API.post('workouts/', workout, {
+            headers: {Authorization: `Bearer ${token}`}
+        });
+    }
 
 export const getUserWorkouts = async () => {
     const token = localStorage.getItem('authToken');
