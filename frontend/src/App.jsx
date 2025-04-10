@@ -16,6 +16,7 @@ import RunWorkout from "./RunWorkout.js";
 
 //EXERCISES 
 import Exercise from "./Exercise.js";
+import CreateExercise from "./CreateExercise"
 
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -75,7 +76,8 @@ function App() {
           element={
           <div className="App">
             <Nav/>
-            <div className="Content">          
+            <div className="Content">      
+                <CreateExercise />   
             </div>
           </div>
         }/>
