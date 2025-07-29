@@ -2,7 +2,7 @@
 
 ## Software
 
-Our documentation is available here: **https://github.com/minjoon0308/ATC_Hugo_App**
+Our documentation is available here: **[link](https://sites.google.com/view/beaver-works-assistive-tech/create-challenge/2025-projects-section/422-tj-team-5?authuser=0)**
 
 This project was uploaded locally to Hugo's computer. Here's how you can run it too!
 
